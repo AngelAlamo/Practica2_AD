@@ -1,22 +1,32 @@
 ---
 title: "Entrega 2"
-author: Ángel Álamo, Juanjo Doblas, Óscar Vanrell 
+author: 
+  - name: Ángel Álamo
+  - name: Juanjo Doblas
+  - name: Óscar Vanrell 
 format: html
 editor: visual
+execute:
+  echo: false
 ---
 
-```{r, echo = FALSE, warning = FALSE}
+# Gráficos de la base de datos mpg
+
+En esta práctica representaremos la información de la base de datos mpg a partir de gráficos utilizando ggplot. Primero cargaremos la librería tidyverse y la tabla de datos.
+
+```{r cargar tidyverse, include = FALSE, warning = FALSE}
 library(tidyverse)
 ```
 
-## Gráficos de la base de datos mpg
 
-En esta práctica representaremos la información de la base de datos mpg a partir de gráficos utilizando ggplot. Primero mostraremos la tabla de datos para ver cuáles son las variables presentes.
-
-```{r}
+```{r mostrar variables, echo = FALSE}
 mpg %>% glimpse
+
 ```
+
+
 Convertimos todas las variables 'character' en factor.
+
 
 ```{r, echo = FALSE}
 mpg = mpg %>%
