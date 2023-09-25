@@ -1,28 +1,28 @@
 ---
 title: "Entrega 2"
-author: Ángel Álamo, Juanjo Doblas, Óscar Vanrell 
+author: 
+  - name: Ángel Álamo
+  - name: Juanjo Doblas
+  - name: Óscar Vanrell 
 format: html
 editor: visual
+execute:
+  echo: false
 ---
 
-```{r, echo = FALSE, warning = FALSE}
+# Gráficos de la base de datos mpg
+
+En esta práctica representaremos la información de la base de datos mpg a partir de gráficos utilizando ggplot2. Primero cargaremos la librería tidyverse y la tabla de datos y veremos cuáles son las variables presentes.
+
+```{r cargar tidyverse, include = FALSE, warning = FALSE}
 library(tidyverse)
 ```
 
-## Gráficos de la base de datos mpg
-
-En esta práctica representaremos la información de la base de datos mpg a partir de gráficos utilizando ggplot2. Primero cargaremos la tabla de datos y veremos cuáles son las variables presentes.
-
-```{r}
-
+```{r cargar tabla mpg}
+mpg %>%  head
 ```
 
-
 1)  Dibujad un gráfico que permita visualizar el número de vehículos de cada fabricante del conjunto de datos.
-
-
-
-
 
 2)  Dibujad un gráfico para mostrar el rendimiento medio en ciudad para cada clase.
 
