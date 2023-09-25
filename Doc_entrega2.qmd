@@ -11,23 +11,85 @@ library(tidyverse)
 
 ## Gráficos de la base de datos mpg
 
-En esta práctica representaremos la información de la base de datos mpg a partir de gráficos utilizando ggplot2. Primero cargaremos la tabla de datos y veremos cuáles son las variables presentes.
+En esta práctica representaremos la información de la base de datos mpg a partir de gráficos utilizando ggplot. Primero mostraremos la tabla de datos para ver cuáles son las variables presentes.
 
 ```{r}
-
+mpg %>% glimpse
 ```
+Convertimos todas las variables 'character' en factor.
+
+```{r, echo = FALSE}
+mpg = mpg %>%
+  mutate(
+    across(where(is.character), as.factor),
+    .keep = "all"
+  )
+
+mpg %>% glimpse
+```
+
 
 
 1)  Dibujad un gráfico que permita visualizar el número de vehículos de cada fabricante del conjunto de datos.
 
+```{r, echo = FALSE}
+
+mpg %>%
+  ggplot(aes(x = manufacturer)) +
+  geom_bar() +
+  labs(x = "Fabricante", y = "Núm. de vehículos") + 
+  theme_bw() +
+  theme(axis.text = element_text(size = 6, face = "bold"))
+  
+
+```
 
 
 
 
 2)  Dibujad un gráfico para mostrar el rendimiento medio en ciudad para cada clase.
 
+
+```{r, echo = FALSE}
+
+mpg %>% 
+  group_by(class) %>% 
+  summarise(cty_media = mean(cty), .groups = "drop") %>%
+  
+  ggplot() + geom_col(aes(x = class, y = cty_media)) +
+  labs(x = "Tipo de vehículo", y = "Rend. medio de ciudad (mpg) ")
+
+
+
+```
+
+
 3)  Construid un gráfico para mostrar el rendimiento medio en ciudad para cada clase y tipo de tracción simultáneamente.
 
+
+```{r}
+
+mpg %>% 
+  group_by(class, drv) %>% 
+  summarise(cty_media = mean(cty), .groups = "drop") %>%
+  unite(col = "class_drv",
+        c(class, drv), sep = "-", remove = T) %>%
+  
+  ggplot() + geom_col(aes(x = class_drv, y = cty_media)) +
+  labs(x = "Tipo de vehículo y tracción", y = "Rend. medio de ciudad (mpg) ") +
+  theme_bw() +
+  theme(axis.text = element_text(size = 6))
+
+
+```
+
+
+
+
 4)  Utilizad un gráfico para mostrar la relación entre el tamaño del motor y el rendimiento en carretera, para cada clase de vehículo. ¿Qué podéis observar?
+
+
+
+
 
 5)  Comparad la distribución del rendimiento en ciudad para distintos tipos de tracción.
