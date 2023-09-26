@@ -26,24 +26,27 @@ mpg %>% glimpse
 Convertimos todas las variables 'character' en factor.
 
 ```{r character a factor}
-mpg = mpg %>%
+mpg2 <- mpg %>%
   mutate(across(where(is.character), as.factor), .keep = "all")
 
-mpg %>% glimpse
+mpg2 %>% glimpse
 ```
 
 ## 1. Dibujad un gráfico que permita visualizar el número de vehículos de cada fabricante del conjunto de datos.
 
 ```{r num vehiculos por fabricante, fig.width = 10, fig.height = 5}
 
-mpg %>%
+colores_degradados <- colorRampPalette(c("red", "yellow"))(length(unique(mpg2$manufacturer)))
+
+mpg2 %>%
   ggplot(aes(x = manufacturer, fill = manufacturer)) +
   geom_bar() +
   labs(x = "Fabricante", y = "Núm. de vehículos") + 
   theme_bw() +
   guides(fill = guide_legend(title = "Fabricante")) +
   theme(axis.title = element_text(face = "bold"),
-        legend.title = element_text(size = 10, face = "bold"))
+        legend.title = element_text(size = 10, face = "bold")) + 
+  scale_fill_manual(values = colores_degradados)
   
 
 ```
@@ -52,7 +55,7 @@ mpg %>%
 
 ```{r rendimiento ciudad por clases, fig.width = 7, fig.height = 4}
 
-mpg %>% 
+mpg2 %>% 
   group_by(class) %>% 
   summarise(cty_media = mean(cty), .groups = "drop") %>%
   ggplot() + 
@@ -63,16 +66,13 @@ mpg %>%
   theme(axis.text = element_text(face = "bold"),
         axis.title = element_text(face = "bold"),
         legend.title = element_text(size = 10, face = "bold"))
-
-
-
 ```
 
 ## 3. Construid un gráfico para mostrar el rendimiento medio en ciudad para cada clase y tipo de tracción simultáneamente.
 
 ```{r rendimiento ciudad por clases y tracción, fig.width = 10, fig.height = 4}
 
-mpg %>% 
+mpg2 %>% 
   group_by(class, drv) %>% 
   summarise(cty_media = mean(cty), .groups = "drop") %>%
   unite(col = "class_drv", c(class, drv), sep = " - ") %>%
@@ -92,7 +92,7 @@ mpg %>%
 
 ```{r relacion tamaño motor y rendimiento carretera, fig.width = 13, fig.height = 3}
 
-mpg %>% 
+mpg2 %>% 
   select(displ, hwy, class) %>% 
   relocate(class, .before = displ) %>%
   group_by(class) %>% 
@@ -102,20 +102,21 @@ mpg %>%
   facet_grid(.~class) +
   scale_fill_manual(values = c("green", "blue", "red",
                                "darkorange","purple","cyan4", "grey")) +
-  labs(x = "Tamaño del motor", y = "Rend. en carretera (en mpg)") +
+  labs(x = "Tamaño del motor (L)", y = "Rend. en carretera (mpg)") +
   guides(fill = guide_legend(title = "Tipo de vehículo")) +
   theme_bw() +
   theme(axis.title = element_text(face = "bold"),
         legend.title = element_text(size = 10, face = "bold"))
-
-
 ```
+Aunque consideremos que la muestra sea pequeña, podemos ver, en general, una correlación negativa entre las dos variables, es decir, a más tamaño de motor, menos rendimiento en ciudad.
+
+Sin embargo, para los gráficos de las clases "2seater" y "minivan", no hay suficientes unidades muestrales como para sacar una relación entre las dos variables, aunque podríamos suponer que siguen la misma relación que las otras clases.
 
 ## 5. Comparad la distribución del rendimiento en ciudad para distintos tipos de tracción.
 
 ```{r distribucion rendimiento ciudad por tipo de traccion, fig.width = 10, fig.height = 4}
 
-mpg %>%
+mpg2 %>%
   select(drv, cty) %>% 
   group_by(drv) %>% 
   ggplot() + 
@@ -123,7 +124,7 @@ mpg %>%
                  na.rm = TRUE) +
   facet_grid(.~drv) +
   scale_fill_manual(values = c("darkorange","purple","cyan4")) +
-  labs(x = "Rendimiento en ciudad", y = "Frec. absoluta") +
+  labs(x = "Rendimiento en ciudad (mpg)", y = "Frec. absoluta") +
   theme_bw() +
   guides(fill = guide_legend(title = "Traccción")) +
   theme(axis.title = element_text(face = "bold"),
@@ -134,7 +135,7 @@ mpg %>%
 
 ```{r comentarios}
 
-# Comentar ejercicio 4
-
+# "	[38;5;250m`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.[39m" sale en el html y habría que quitarlo
 ```
+
 
