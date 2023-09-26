@@ -45,7 +45,7 @@ mpg %>% glimpse
 ```{r, echo = FALSE}
 
 mpg %>%
-  ggplot(aes(x = manufacturer)) +
+  ggplot(aes(x = manufacturer, fill = manufacturer)) +
   geom_bar() +
   labs(x = "Fabricante", y = "Núm. de vehículos") + 
   theme_bw() +
@@ -66,8 +66,10 @@ mpg %>%
   group_by(class) %>% 
   summarise(cty_media = mean(cty), .groups = "drop") %>%
   
-  ggplot() + geom_col(aes(x = class, y = cty_media)) +
-  labs(x = "Tipo de vehículo", y = "Rend. medio de ciudad (mpg) ")
+  ggplot() + geom_col(aes(x = class, y = cty_media, fill = class)) +
+  labs(x = "Tipo de vehículo", y = "Rend. medio en ciudad (mpg) ") +
+  theme_bw() + 
+  guides(fill = guide_legend(title = "Vehículos"))
 
 
 
@@ -83,12 +85,15 @@ mpg %>%
   group_by(class, drv) %>% 
   summarise(cty_media = mean(cty), .groups = "drop") %>%
   unite(col = "class_drv",
-        c(class, drv), sep = "-", remove = T) %>%
+        c(class, drv), sep = "-") %>%
   
-  ggplot() + geom_col(aes(x = class_drv, y = cty_media)) +
+  ggplot() + geom_col(aes(x = class_drv, y = cty_media, fill = class_drv), alpha = 0.8, 
+                 position = "identity",
+                 na.rm = TRUE) +
   labs(x = "Tipo de vehículo y tracción", y = "Rend. medio de ciudad (mpg) ") +
   theme_bw() +
-  theme(axis.text = element_text(size = 6))
+  theme(axis.text = element_text(size = 6)) +
+  guides(fill = guide_legend(title = "Vehículo - Tracción"))
 
 
 ```
@@ -103,3 +108,13 @@ mpg %>%
 
 
 5)  Comparad la distribución del rendimiento en ciudad para distintos tipos de tracción.
+
+
+
+
+
+
+
+
+
+
