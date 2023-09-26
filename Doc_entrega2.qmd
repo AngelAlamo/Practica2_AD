@@ -36,7 +36,7 @@ mpg2 %>% glimpse
 
 ```{r num vehiculos por fabricante, fig.width = 10, fig.height = 5}
 
-colores_degradados <- colorRampPalette(c("red", "yellow"))(length(unique(mpg2$manufacturer)))
+colores_degradados <- colorRampPalette(c("cyan3", "purple"))(length(unique(mpg2$manufacturer)))
 
 mpg2 %>%
   ggplot(aes(x = manufacturer, fill = manufacturer)) +
@@ -72,6 +72,14 @@ mpg2 %>%
 
 ```{r rendimiento ciudad por clases y tracción, fig.width = 10, fig.height = 4}
 
+colores_degradados2 <- colorRampPalette(c("cyan3", "purple", "red", "yellow")) (length(unique(mpg2$manufacturer)))
+colores_degradados2
+
+c("green", "blue", "red",
+                               "darkorange","purple","cyan4", "grey")
+
+colores_clase = c("green", rep("blue", 2), rep("violet", 2), "orange", "red" ,rep("cyan3",3), rep("pink",2) )
+
 mpg2 %>% 
   group_by(class, drv) %>% 
   summarise(cty_media = mean(cty), .groups = "drop") %>%
@@ -84,7 +92,8 @@ mpg2 %>%
   theme(axis.text = element_text(size = 6)) +
   guides(fill = guide_legend(title = "Vehículo - Tracción")) +
   theme(axis.title = element_text(face = "bold"),
-        legend.title = element_text(size = 10, face = "bold"))
+        legend.title = element_text(size = 10, face = "bold")) +
+  scale_fill_manual(values = colores_clase)
 
 
 ```
@@ -120,8 +129,8 @@ mpg2 %>%
   select(drv, cty) %>% 
   group_by(drv) %>% 
   ggplot() + 
-  geom_histogram(aes(x = cty, fill = drv), alpha = 0.5, position = "identity",
-                 na.rm = TRUE) +
+  geom_histogram(aes(x = cty, fill = drv), alpha = 0.7, position = "identity",
+                 na.rm = TRUE, bins=30) +
   facet_grid(.~drv) +
   scale_fill_manual(values = c("darkorange","purple","cyan4")) +
   labs(x = "Rendimiento en ciudad (mpg)", y = "Frec. absoluta") +
@@ -133,9 +142,5 @@ mpg2 %>%
 
 ```
 
-```{r comentarios}
-
-# "	[38;5;250m`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.[39m" sale en el html y habría que quitarlo
-```
 
 
