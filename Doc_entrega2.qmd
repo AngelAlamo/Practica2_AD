@@ -49,7 +49,9 @@ mpg %>%
   geom_bar() +
   labs(x = "Fabricante", y = "Núm. de vehículos") + 
   theme_bw() +
-  theme(axis.text = element_text(size = 6, face = "bold"))
+  guides(fill = guide_legend(title = "Fabricante")) +
+  theme(axis.title = element_text(face = "bold"),
+        legend.title = element_text(size = 10, face = "bold"))
   
 
 ```
@@ -69,7 +71,10 @@ mpg %>%
   ggplot() + geom_col(aes(x = class, y = cty_media, fill = class)) +
   labs(x = "Tipo de vehículo", y = "Rend. medio en ciudad (mpg) ") +
   theme_bw() + 
-  guides(fill = guide_legend(title = "Vehículos"))
+  guides(fill = guide_legend(title = "Vehículos")) +
+  theme(axis.text = element_text(face = "bold"),
+        axis.title = element_text(face = "bold"),
+        legend.title = element_text(size = 10, face = "bold"))
 
 
 
@@ -90,10 +95,12 @@ mpg %>%
   ggplot() + geom_col(aes(x = class_drv, y = cty_media, fill = class_drv), alpha = 0.8, 
                  position = "identity",
                  na.rm = TRUE) +
-  labs(x = "Tipo de vehículo y tracción", y = "Rend. medio de ciudad (mpg) ") +
+  labs(x = "Tipo de vehículo y tracción", y = "Rend. medio en ciudad (mpg) ") +
   theme_bw() +
   theme(axis.text = element_text(size = 6)) +
-  guides(fill = guide_legend(title = "Vehículo - Tracción"))
+  guides(fill = guide_legend(title = "Vehículo - Tracción")) +
+  theme(axis.title = element_text(face = "bold"),
+        legend.title = element_text(size = 10, face = "bold"))
 
 
 ```
@@ -104,12 +111,57 @@ mpg %>%
 4)  Utilizad un gráfico para mostrar la relación entre el tamaño del motor y el rendimiento en carretera, para cada clase de vehículo. ¿Qué podéis observar?
 
 
+```{r}
+
+mpg %>% 
+  select(displ, hwy, class) %>% 
+  relocate(class, .before = displ) %>%
+  group_by(class) %>% 
+  
+  ggplot() + geom_point(aes(x = displ, y = hwy, color = class), position = "identity", na.rm = TRUE) +
+  facet_grid(.~class) +
+  scale_fill_manual(values = c("green", "blue", "red", "darkorange","purple","cyan4", "grey")) +
+  labs(x = "Tamaño del motor",
+       y = "Rend. en carretera (en mpg)") +
+  guides(fill = guide_legend(title = "Tipo de vehículo")) +
+  theme_bw() +
+  theme(axis.title = element_text(face = "bold"),
+        legend.title = element_text(size = 10, face = "bold"))
+
+
+```
+
+```{r}
+
+# Comentar
+
+```
 
 
 
 5)  Comparad la distribución del rendimiento en ciudad para distintos tipos de tracción.
 
 
+```{r}
+
+mpg %>%
+  select(drv, cty) %>% 
+  group_by(drv) %>% 
+  
+  ggplot() + geom_histogram(aes(x = cty, fill = drv),
+                            alpha = 0.5, 
+                            position = "identity",
+                            na.rm = TRUE) +
+  facet_grid(.~drv) +
+  scale_fill_manual(values = c("darkorange","purple","cyan4")) +
+  labs(x = "Rendimiento en ciudad", y = "Frec. absoluta") +
+  theme_bw() +
+  guides(fill = guide_legend(title = "Traccción")) +
+  theme(axis.title = element_text(face = "bold"),
+        legend.title = element_text(size = 10, face = "bold"))
+  
+
+```
 
 
 
