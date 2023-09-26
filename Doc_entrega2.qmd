@@ -72,12 +72,6 @@ mpg2 %>%
 
 ```{r rendimiento ciudad por clases y tracción, fig.width = 10, fig.height = 4}
 
-colores_degradados2 <- colorRampPalette(c("cyan3", "purple", "red", "yellow")) (length(unique(mpg2$manufacturer)))
-colores_degradados2
-
-c("green", "blue", "red",
-                               "darkorange","purple","cyan4", "grey")
-
 colores_clase = c("green", rep("blue", 2), rep("violet", 2), "orange", "red" ,rep("cyan3",3), rep("pink",2) )
 
 mpg2 %>% 
