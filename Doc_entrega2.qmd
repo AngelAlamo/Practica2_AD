@@ -123,7 +123,7 @@ Sin embargo, para los gráficos de las clases "2seater" y "minivan", no hay sufi
 
 ## 5. Comparad la distribución del rendimiento en ciudad para distintos tipos de tracción.
 
-```{r rendimiento ciudad por clases, fig.width = 10, fig.height = 4}
+```{r densidad, fig.width = 10, fig.height = 4}
 mpg %>% 
   ggplot(aes(x=cty, group=drv, fill=drv)) +
   geom_density(adjust=1.5, alpha=.5) +
