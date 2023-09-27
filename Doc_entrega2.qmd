@@ -47,19 +47,21 @@ mpg %>%
 ```{r rendimiento ciudad por clases, fig.width = 7, fig.height = 4}
 
 colores_clase = c("green", "blue", "violet", "orange", "red", "cyan3", "pink")
-
+#summarise(cty_media = mean(cty), .groups = "drop") %>%
 mpg %>% 
   group_by(class) %>% 
-  summarise(cty_media = mean(cty), .groups = "drop") %>%
   ggplot() + 
-  geom_col(aes(x = class, y = cty_media, fill = class), alpha = 0.6) +
+  geom_boxplot(aes(x = class, y = cty, color = class)) +
+  stat_summary(aes(x = class, y = cty), fun = mean, geom = "point", shape = 19, 
+               size = 1, color = "black") +
   labs(x = "Tipo de vehículo", y = "Rend. medio en ciudad (mpg) ") +
   theme_bw() + 
   guides(fill = guide_legend(title = "Clases de vehículos")) +
   theme(axis.text = element_text(face = "bold"),
         axis.title = element_text(face = "bold"),
         legend.title = element_text(size = 10, face = "bold")) + 
-  scale_fill_manual(values = colores_clase)
+  scale_color_manual(values = colores_clase)
+  
 ```
 
 ## 3. Construid un gráfico para mostrar el rendimiento medio en ciudad para cada clase y tipo de tracción simultáneamente.
@@ -68,20 +70,23 @@ mpg %>%
 
 colores_clase = c("green", rep("blue", 2), rep("violet", 2), "orange", "red" ,rep("cyan3",3), rep("pink",2) )
 
+#summarise(cty_media = mean(cty), .groups = "drop") %>%
+
 mpg %>% 
   group_by(class, drv) %>% 
-  summarise(cty_media = mean(cty), .groups = "drop") %>%
   unite(col = "class_drv", c(class, drv), sep = " - ") %>%
   ggplot() + 
-  geom_col(aes(x = class_drv, y = cty_media, fill = class_drv), alpha = 0.6,
-           position = "identity", na.rm = TRUE) +
+  geom_boxplot(aes(x = class_drv, y = cty, color = class_drv), 
+               position = "identity", na.rm = TRUE) + 
+  stat_summary(aes(x = class_drv, y = cty), fun = mean, geom = "point", shape = 19, 
+               size = 1, color = "black") +
   labs(x = "Tipo de vehículo y tracción", y = "Rend. medio en ciudad (mpg) ") +
   theme_bw() +
   theme(axis.text = element_text(size = 6)) +
   guides(fill = guide_legend(title = "Vehículo - Tracción")) +
   theme(axis.title = element_text(face = "bold"),
         legend.title = element_text(size = 10, face = "bold")) +
-  scale_fill_manual(values = colores_clase)
+  scale_color_manual(values = colores_clase)
 
 
 ```
