@@ -123,21 +123,22 @@ Sin embargo, para los gráficos de las clases "2seater" y "minivan", no hay sufi
 
 ## 5. Comparad la distribución del rendimiento en ciudad para distintos tipos de tracción.
 
-```{r distribucion rendimiento ciudad por tipo de traccion, fig.width = 10, fig.height = 4}
-
-mpg %>%
-  select(drv, cty) %>% 
-  group_by(drv) %>% 
-  ggplot() + 
-  geom_histogram(aes(x = cty, fill = drv), alpha = 0.7, position = "identity",
-                 na.rm = TRUE, bins=30) +
-  facet_grid(.~drv) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4")) +
-  labs(x = "Rendimiento en ciudad (mpg)", y = "Frec. absoluta") +
-  theme_bw() +
-  guides(fill = guide_legend(title = "Traccción")) +
-  theme(axis.title = element_text(face = "bold"),
-        legend.title = element_text(size = 10, face = "bold"))
+```{r rendimiento ciudad por clases, fig.width = 10, fig.height = 4}
+mpg %>% 
+  ggplot(aes(x=cty, group=drv, fill=drv)) +
+  geom_density(adjust=1.5, alpha=.5) +
   
+ 
+  labs(x = "Rendimiento en ciudad (mpg)", y = "Función densidad") +
+  theme_bw() + 
+  guides(fill = guide_legend(title = "Tipos de traccion")) +
+  theme(axis.text = element_text(face = "bold"),
+        axis.title = element_text(face = "bold"),
+        legend.title = element_text(size = 10, face = "bold")) + 
+  scale_x_continuous(limits = c(0,40))
+
+
+
+
 
 ```
