@@ -108,8 +108,8 @@ mpg2 %>%
   geom_point(aes(x = displ, y = hwy, color = class), position = "identity",
              na.rm = TRUE) +
   facet_grid(.~class) +
-  #scale_fill_manual(values = c("green", "blue", "red",
-   #                            "darkorange","purple","cyan4", "grey")) +
+  scale_fill_manual(values = c("green", "blue", "red",
+                               "darkorange","purple","cyan4", "grey")) +
   labs(x = "Tamaño del motor (L)", y = "Rend. en carretera (mpg)") +
   guides(fill = guide_legend(title = "Tipo de vehículo")) +
   theme_bw() +
